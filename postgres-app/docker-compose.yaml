@@ -1,0 +1,33 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: postgres-server
+    restart: always
+    environment:
+      POSTGRES_DB: demodb
+      POSTGRES_USER: demouser
+      POSTGRES_PASSWORD: demopass123
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - db-net
+
+
+  adminer: 
+    image: adminer:latest
+    container_name: postgres-adminer
+    restart: always
+    ports:
+      - "8086:8080"
+    networks:
+      - db-net
+
+
+networks:
+  db-net:
+    driver: bridge
+
+
+
+volumes:
+  postgres_data:

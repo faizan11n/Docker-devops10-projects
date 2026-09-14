@@ -1,0 +1,6 @@
+services:
+  php-profile:
+    build: .
+    container_name: php-profile-app
+    ports:
+     - "8084:80"
