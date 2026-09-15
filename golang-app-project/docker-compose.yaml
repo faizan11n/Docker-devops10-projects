@@ -1,0 +1,6 @@
+services:
+  goapp:
+    build: .
+    container_name: golang-app
+    ports:
+      - "8088:8080"
