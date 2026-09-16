@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Calculator</title>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #232526, #414345);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .calculator {
+            background: #1c1c1e;
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            width: 320px;
+        }
+        .display {
+            background: #000;
+            color: white;
+            font-size: 40px;
+            text-align: right;
+            padding: 20px 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            min-height: 60px;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+        button {
+            padding: 20px 0;
+            font-size: 20px;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            background: #333;
+            color: white;
+            transition: background 0.2s;
+        }
+        button:hover { background: #4d4d4d; }
+        .operator { background: #ff9500; }
+        .operator:hover { background: #ffb143; }
+        .equals { background: #ff9500; grid-column: span 2; border-radius: 40px; }
+        .clear { background: #a5a5a5; color: black; }
+        .clear:hover { background: #c7c7c7; }
+        .zero { grid-column: span 2; border-radius: 40px; }
+    </style>
+</head>
+<body>
+    <div class="calculator">
+        <div class="display" id="display">0</div>
+        <div class="buttons">
+            <button class="clear" onclick="clearDisplay()">C</button>
+            <button class="operator" onclick="appendValue('/')">/</button>
+            <button class="operator" onclick="appendValue('*')">&times;</button>
+            <button class="operator" onclick="deleteLast()">&larr;</button>
+
+            <button onclick="appendValue('7')">7</button>
+            <button onclick="appendValue('8')">8</button>
+            <button onclick="appendValue('9')">9</button>
+            <button class="operator" onclick="appendValue('-')">-</button>
+
+            <button onclick="appendValue('4')">4</button>
+            <button onclick="appendValue('5')">5</button>
+            <button onclick="appendValue('6')">6</button>
+            <button class="operator" onclick="appendValue('+')">+</button>
+
+            <button onclick="appendValue('1')">1</button>
+            <button onclick="appendValue('2')">2</button>
+            <button onclick="appendValue('3')">3</button>
+            <button class="equals" onclick="calculate()" rowspan="2">=</button>
+
+            <button class="zero" onclick="appendValue('0')">0</button>
+            <button onclick="appendValue('.')">.</button>
+        </div>
+    </div>
+
+    <script>
+        let display = document.getElementById('display');
+        let currentValue = '0';
+
+        function updateDisplay() {
+            display.textContent = currentValue;
+        }
+
+        function appendValue(val) {
+            if (currentValue === '0' && val !== '.') {
+                currentValue = val;
+            } else {
+                currentValue += val;
+            }
+            updateDisplay();
+        }
+
+        function clearDisplay() {
+            currentValue = '0';
+            updateDisplay();
+        }
+
+        function deleteLast() {
+            currentValue = currentValue.slice(0, -1);
+            if (currentValue === '') currentValue = '0';
+            updateDisplay();
+        }
+
+        function calculate() {
+            try {
+                // Using Function constructor instead of eval for slightly safer evaluation
+                let result = Function('"use strict"; return (' + currentValue + ')')();
+                currentValue = String(result);
+            } catch (e) {
+                currentValue = 'Error';
+            }
+            updateDisplay();
+        }
+    </script>
+</body>
+</html>
