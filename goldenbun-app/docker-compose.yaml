@@ -1,0 +1,48 @@
+services:
+  db:
+    image: mysql:8.0
+    container_name: goldenbun-db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass123
+      MYSQL_DATABASE: goldenbun
+      MYSQL_USER: demouser
+      MYSQL_PASSWORD: demopass123
+    volumes:
+      - goldenbun_data:/var/lib/mysql
+    networks:
+      - goldenbun-net
+
+  backend:
+    build: ./backend
+    container_name: goldenbun-backend
+    restart: always
+    depends_on:
+      - db
+    ports:
+      - "8095:5000"
+    environment:
+      DB_HOST: db
+      DB_USER: demouser
+      DB_PASSWORD: demopass123
+      DB_NAME: goldenbun
+    networks:
+      - goldenbun-net
+
+
+  frontend:
+    build: ./frontend
+    container_name: goldenbun-frontend
+    restart: always
+    depends_on:
+      - backend
+    ports:
+      - "8096:80"
+    networks:
+      - goldenbun-net
+
+networks:
+  goldenbun-net:
+
+volumes:
+  goldenbun_data:
