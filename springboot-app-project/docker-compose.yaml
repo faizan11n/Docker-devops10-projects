@@ -1,0 +1,6 @@
+services:
+  springapp:
+    build: .
+    container_name: springboot-app
+    ports:
+      - "8093:8080"
