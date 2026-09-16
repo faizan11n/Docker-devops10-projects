@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Brew & Bean Coffee Shop</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- React and ReactDOM from CDN (no npm install needed) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+  <!-- Babel standalone lets the browser understand JSX directly, no build step required -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
+</head>
+<body style="margin:0;">
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState } = React;
+
+    const menuItems = [
+      { name: 'Espresso', price: '$3.00', desc: 'Bold and rich, straight to the point.' },
+      { name: 'Cappuccino', price: '$4.50', desc: 'Espresso topped with velvety foam.' },
+      { name: 'Cold Brew', price: '$4.00', desc: 'Slow-steeped for 18 hours, smooth and cold.' },
+      { name: 'Caramel Latte', price: '$5.00', desc: 'Espresso, steamed milk, and caramel drizzle.' },
+    ];
+
+    function App() {
+      const [likes, setLikes] = useState({});
+
+      const handleLike = (name) => {
+        setLikes((prev) => ({ ...prev, [name]: (prev[name] || 0) + 1 }));
+      };
+
+      return (
+        <div style={styles.page}>
+          <header style={styles.header}>
+            <h1 style={styles.logo}>☕ Brew & Bean</h1>
+            <p style={styles.tagline}>Handcrafted coffee, served with love.</p>
+          </header>
+
+          <section style={styles.menuSection}>
+            <h2 style={styles.sectionTitle}>Our Menu</h2>
+            <div style={styles.grid}>
+              {menuItems.map((item) => (
+                <div key={item.name} style={styles.card}>
+                  <h3>{item.name}</h3>
+                  <p style={styles.price}>{item.price}</p>
+                  <p style={styles.desc}>{item.desc}</p>
+                  <button style={styles.likeButton} onClick={() => handleLike(item.name)}>
+                    ❤️ {likes[item.name] || 0}
+                  </button>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          <footer style={styles.footer}>
+            <p>Built with React (CDN, no build step), served by Nginx inside Docker.</p>
+          </footer>
+        </div>
+      );
+    }
+
+    const styles = {
+      page: { fontFamily: 'Georgia, serif', background: '#f5efe6', minHeight: '100vh' },
+      header: { background: '#4b2e2b', color: '#f5efe6', textAlign: 'center', padding: '50px 20px' },
+      logo: { fontSize: '36px', margin: 0 },
+      tagline: { fontSize: '16px', marginTop: '10px', opacity: 0.85 },
+      menuSection: { padding: '40px 20px', maxWidth: '900px', margin: '0 auto' },
+      sectionTitle: { textAlign: 'center', color: '#4b2e2b', marginBottom: '30px' },
+      grid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '20px' },
+      card: { background: 'white', borderRadius: '12px', padding: '20px', boxShadow: '0 6px 16px rgba(0,0,0,0.1)', textAlign: 'center' },
+      price: { color: '#a5682a', fontWeight: 'bold' },
+      desc: { fontSize: '14px', color: '#666' },
+      likeButton: { marginTop: '10px', border: 'none', background: '#f0e6da', padding: '8px 14px', borderRadius: '20px', cursor: 'pointer' },
+      footer: { textAlign: 'center', padding: '20px', color: '#888', fontSize: '13px' },
+    };
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App />);
+  </script>
+</body>
+</html>

@@ -1,0 +1,6 @@
+services:
+  coffeeshop:
+    build: .
+    container_name: react-coffeeshop
+    ports:
+      - "8092:80"
